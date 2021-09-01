@@ -1,31 +1,69 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Matrix Project", "Matrix Project\Matrix Project.vcxproj", "{364AF558-B015-485B-BD9C-3F5B87B241F3}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Debug|x64.ActiveCfg = Debug|x64
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Debug|x64.Build.0 = Debug|x64
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Debug|x86.ActiveCfg = Debug|Win32
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Debug|x86.Build.0 = Debug|Win32
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Release|x64.ActiveCfg = Release|x64
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Release|x64.Build.0 = Release|x64
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Release|x86.ActiveCfg = Release|Win32
-		{364AF558-B015-485B-BD9C-3F5B87B241F3}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FB45C82B-2B98-4DEB-B678-7EB64E8EF60A}
-	EndGlobalSection
-EndGlobal
+
+#include <iostream>
+#include<ctime>
+
+using namespace std;
+
+
+int main()
+{
+    std::cout << "Hello World!\n";
+    srand(time(NULL));
+
+    const int n = 10;
+    int matrix1[n][n];
+    int matrix2[n][n];
+    int result[n][n];
+
+
+
+    cout << "First Matrix: " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            matrix1[i][j] = rand() % 50;
+            cout << matrix1[i][j] << "\t";
+        }
+        cout << endl;
+    }
+
+    cout << "Second Matrix: " << endl;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            matrix2[i][j] = rand() % 50;
+            cout << matrix2[i][j] << "\t";
+        }
+        cout << endl;
+    }
+
+
+    for (int resRow = 0; resRow < n; resRow++)
+    {
+        for (int resCol = 0; resCol < n; resCol++)
+        {
+            result[resRow][resCol] = 0;
+            for (int rowCol = 0; rowCol < n; rowCol++)
+                result[resRow][resCol] += matrix1[resRow][rowCol] * matrix2[rowCol][resCol];
+        }
+    }
+
+
+    cout << "Result matrix is \n";
+    for (int row = 0; row < n; row++)
+    {
+        for (int col = 0; col < n; col++)
+        {
+            cout << result[row][col] << "\t";
+        }
+        cout << "\n";
+    }
+
+
+    system("PAUSE");
+
+    return 0;
+
+}
