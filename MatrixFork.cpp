@@ -5,7 +5,7 @@
 #include <unistd.h>
 using namespace std;
 
-#define MAX 5
+#define MAX 2048
 
 
 int matA[MAX][MAX];
@@ -19,53 +19,8 @@ pid_t process_1;
 pid_t process_2;
 
 
-int main()
+void parallelism()
 {
-  std::cout << "Welcome To The Matrix Product Software!\n";
-  srand(time(NULL));
-	for (int i = 0; i < MAX; i++) {
-		for (int j = 0; j < MAX; j++) {
-			matA[i][j] = rand() % 10;
-			matB[i][j] = rand() % 10;
-		}
-	}
-
-
-	cout << endl<< "Matrix A" << endl;
-	for (int i = 0; i < MAX; i++) {
-		for (int j = 0; j < MAX; j++)
-			cout << matA[i][j] << " ";
-		cout << endl;
-	}
-
-
-	cout << endl << "Matrix B" << endl;
-	for (int i = 0; i < MAX; i++) {
-		for (int j = 0; j < MAX; j++)
-			cout << matB[i][j] << " ";
-		cout << endl;
-	}
-
-  cout << endl << "Sequential Time: " << endl;
-  cout << endl << "Matrix C" << endl;
-  std::clock_t c_start1 = std::clock();
-  for (int i = 0; i < MAX; i++)
-  {
-    for (int j = 0; j < MAX; j++)
-    {
-        for (int k = 0; k < MAX; k++)
-            matCSecuential[i][j] += matA[i][k] * matB[k][j];
-            cout << matCSecuential[i][j] << "\t";
-    }
-    cout << endl;
-  }
-  std::clock_t c_end1 = std::clock();
-  long double time_elapsed_ms1 = 1000.0 * (c_end1-c_start1) / CLOCKS_PER_SEC;
-  std::cout << endl << "CPU time used: " << time_elapsed_ms1 << " ms\n";
-
-
-  cout<<"Parallel execution"<<endl;
-
   pid_t pid = fork();
   if (pid)
   {
@@ -116,9 +71,9 @@ int main()
           {
             matCParallel[i][j] += matA[i][k] * matB[k][j];
           }
-          cout<<matCParallel[i][j] << "\t";
+          //cout<<matCParallel[i][j] << "\t";
         }
-        cout<<endl;
+        //cout<<endl;
       }
     }
     exit(0);
@@ -126,7 +81,63 @@ int main()
 
   waitpid(process_1, NULL, 0);
   waitpid(process_2, NULL, 0);
+}
 
+int main()
+{
+  std::cout << "Welcome To The Matrix Product Software!\n";
+  srand(time(NULL));
+	for (int i = 0; i < MAX; i++) {
+		for (int j = 0; j < MAX; j++) {
+			matA[i][j] = rand() % 10;
+			matB[i][j] = rand() % 10;
+		}
+	}
+
+//FOR PRINTING MATRIX A
+/*
+	cout << endl<< "Matrix A" << endl;
+	for (int i = 0; i < MAX; i++) {
+		for (int j = 0; j < MAX; j++)
+			cout << matA[i][j] << " ";
+		cout << endl;
+	}
+*/
+
+//FOR PRINTING MATRIX B
+/*
+	cout << endl << "Matrix B" << endl;
+	for (int i = 0; i < MAX; i++) {
+		for (int j = 0; j < MAX; j++)
+			cout << matB[i][j] << " ";
+		cout << endl;
+	}
+*/
+
+
+  cout << endl << "Sequential Time: " << endl;
+  std::clock_t c_start1 = std::clock();
+  for (int i = 0; i < MAX; i++)
+  {
+    for (int j = 0; j < MAX; j++)
+    {
+        for (int k = 0; k < MAX; k++)
+            matCSecuential[i][j] += matA[i][k] * matB[k][j];
+            //cout << matCSecuential[i][j] << "\t";
+    }
+    //cout << endl;
+  }
+  std::clock_t c_end1 = std::clock();
+  long double time_elapsed_ms1 = 1000.0 * (c_end1-c_start1) / CLOCKS_PER_SEC;
+  std::cout << endl << "CPU time used: " << time_elapsed_ms1 << " ms\n";
+
+
+  cout<<"Parallel execution"<<endl;
+  std::clock_t c_start2 = std::clock();
+  parallelism();
+  std::clock_t c_end2 = std::clock();
+  long double time_elapsed_ms2 = 1000.0 * (c_end2-c_start2) / CLOCKS_PER_SEC;
+  std::cout << endl << "CPU time used: " << time_elapsed_ms2 << " ms\n";
 
 
 	return 0;
