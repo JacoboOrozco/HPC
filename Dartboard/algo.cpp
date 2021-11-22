@@ -81,7 +81,7 @@ int main()
 
     std::clock_t c_start1 = std::clock();
 
-
+    #pragma omp parallel for
     for(int i = 0; i < NUM_THREADS; i++)
     {
         n_Hits1 = throwDarts(first_Half_Throws);
